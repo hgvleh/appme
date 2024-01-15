@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
 import { SeverityPill } from 'src/components/severity-pill';
+import { useEffect } from 'react';
 
 const statusMap = {
   pending: 'warning',
@@ -25,75 +26,63 @@ const statusMap = {
 };
 
 export const OverviewLatestOrders = (props) => {
-  const { orders = [], sx } = props;
+  const { orders, sx } = props;
+  useEffect(()=>{
+    orders.map((t)=>{
+      console.log(      t.code)
+
+    })
+
+  })
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Orders" />
+      <CardHeader title="المعلومات" dir='rtl'/>
       <Scrollbar sx={{ flexGrow: 1 }}>
-        <Box sx={{ minWidth: 800 }}>
+        <Box sx={{ minWidth: 350 }}>
           <Table>
             <TableHead>
               <TableRow>
+                
                 <TableCell>
-                  Order
-                </TableCell>
-                <TableCell>
-                  Customer
+                  رقم الهاتف
                 </TableCell>
                 <TableCell sortDirection="desc">
-                  Date
+                  الرمز السري
                 </TableCell>
                 <TableCell>
-                  Status
+                  كود التفعيل
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.map((order) => {
-                const createdAt = format(order.createdAt, 'dd/MM/yyyy');
+              {orders!==undefined?orders.map((order,key) => {
 
                 return (
                   <TableRow
                     hover
-                    key={order.id}
+                    key={key}
                   >
                     <TableCell>
-                      {order.ref}
+                      {order.phone}
                     </TableCell>
                     <TableCell>
-                      {order.customer.name}
+                      {order.pass}
                     </TableCell>
                     <TableCell>
-                      {createdAt}
-                    </TableCell>
-                    <TableCell>
-                      <SeverityPill color={statusMap[order.status]}>
-                        {order.status}
+                      <SeverityPill color='success'>
+                        {order.code}
                       </SeverityPill>
                     </TableCell>
                   </TableRow>
                 );
-              })}
+              }):null}
             </TableBody>
           </Table>
         </Box>
       </Scrollbar>
       <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          )}
-          size="small"
-          variant="text"
-        >
-          View all
-        </Button>
-      </CardActions>
+      
     </Card>
   );
 };
